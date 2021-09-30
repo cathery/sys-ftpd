@@ -117,6 +117,8 @@ int main(int argc, char** argv)
     char buffer[100];
     ini_gets("Pause", "disabled:", "0", buffer, 100, CONFIGPATH);
 
+    initPads();
+
     //Checks if pausing is disabled in the config file, in which case it skips the entire pause initialization
     if (strncmp(buffer, "1", 4) != 0)
     {

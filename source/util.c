@@ -13,16 +13,27 @@ static bool inputThreadRunning = true;
 static bool paused = false;
 static Mutex pausedMutex = 0;
 static Thread pauseThread;
-static HidControllerKeys comboKeys[8] = {};
+static HidNpadButton comboKeys[8] = {0};
+static PadState pad = {0};
+
+bool isHidHandheld()
+{
+    return padIsHandheld(&pad);
+}
+
+void initPads()
+{
+    padInitializeAny(&pad);
+}
 
 void inputPoller()
 {
     do
     {
-        hidScanInput();
+        padUpdate(&pad);
         u64 kHeld = 0;
         for (u8 controller = 0; controller != 10; controller++)
-            kHeld |= hidKeysHeld(controller);
+            kHeld |= padGetButtons(&pad);
 
         u64 keyCombo = 0;
         for (u8 i = 0; i != sizearray(comboKeys); ++i)
@@ -65,7 +76,7 @@ const char* buttons[] = {
     "DDOWN",
 };
 
-HidControllerKeys GetKey(const char* text)
+HidNpadButton GetKey(const char* text)
 {
     for (u8 i = 0; i != sizearray(buttons); ++i)
     {

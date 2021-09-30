@@ -67,9 +67,9 @@ static const HidsysNotificationLedPattern single_click_pattern = {
 static void send_led_pattern(const HidsysNotificationLedPattern* pattern)
 {
     s32 total_entries;
-    u64 uniquePadIds[2];
+    HidsysUniquePadId uniquePadIds[2];
 
-    Result rc = hidsysGetUniquePadsFromNpad(hidGetHandheldMode() ? CONTROLLER_HANDHELD : CONTROLLER_PLAYER_1, uniquePadIds, 2, &total_entries);
+    const Result rc = hidsysGetUniquePadsFromNpad(isHidHandheld() ? HidNpadIdType_Handheld : HidNpadIdType_No1, uniquePadIds, 2, &total_entries);
     if (R_FAILED(rc) && rc != MAKERESULT(Module_Libnx, LibnxError_IncompatSysVer))
         fatalThrow(rc);
 
