@@ -31,9 +31,7 @@ void inputPoller()
     do
     {
         padUpdate(&pad);
-        u64 kHeld = 0;
-        for (u8 controller = 0; controller != 10; controller++)
-            kHeld |= padGetButtons(&pad);
+        u64 kHeld = padGetButtons(&pad);
 
         u64 keyCombo = 0;
         for (u8 i = 0; i != sizearray(comboKeys); ++i)
